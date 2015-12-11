@@ -1,0 +1,10 @@
+#!/usr/bin/env python
+# coding=UTF-8
+
+from subprocess import call
+import os
+
+packages = os.environ["PIP_PACKAGES"].split(";")
+
+for package in packages:
+    call(["pip","install",package])
