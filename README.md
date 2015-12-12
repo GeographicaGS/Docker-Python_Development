@@ -1,6 +1,6 @@
 # A Docker Container for Interactively Running Python Tests Inside a Docker-Compose
 
-First things first: I'm in no way a __Docker__ expert. We at [Geographica](http://www.geographica.gs/en) have been using Docker for some time now and therefore we are learning new things constantly. Perhaps this Docker is the ugliest compendia of hacks around and is a mess, perhaps there are other, finer ways of achieving what I'm trying to do here, I don't know. Perhaps even this is brilliant! (I doubt so). In any case, it solves more or less a problem I came by.
+First things first: I'm in no way a __Docker__ expert. We at [Geographica](http://www.geographica.gs/en) have been using Docker for some time now and therefore we are learning new things constantly. Perhaps this Docker is the ugliest compendium of hacks around and is a mess, perhaps there are other, finer ways of achieving what I'm trying to do here, I don't know. Perhaps even this is brilliant! (I doubt so). In any case, it solves more or less a problem I came by.
 
 The situation this image is trying to mitigate is the following: I'm developing a library in Python that attacks a REST interface coupled with a PostgreSQL database (if you are curious, it is here: [https://github.com/GeographicaGS/GeoServer-Python-REST-API](https://github.com/GeographicaGS/GeoServer-Python-REST-API)). So I created a __Docker Compose__ that creates the REST application and the PostgreSQL, and links them so the web application can see the PostgreSQL inside the network shared by Docker. This creates the following situation:
 
