@@ -39,8 +39,9 @@ docker pull geographica/python_development:2.7.11
 Always run the Compose or the container with __-d__. To run it:
 
 ```Shell
-docker run -d --name whatever -e "PIP_PACKAGES=ipython;psycopg2" \
+docker run -d --name whatever -e "PIP_PACKAGES=ipython;psycopg2;pytest" \
 -e "CONTAINER_USER_UID=1001" -e "CONTAINER_GROUP_ID=1002" \
+-e "ADDTOPYPATH=/home/python-dev/src" \
 -v /home/testuser/:/home/python-dev/ geographica/python_development:2.7.11
 ```
 
@@ -53,6 +54,7 @@ python-dev:
     - PIP_PACKAGES=ipython;psycopg2
     - CONTAINER_USER_UID=1000
     - CONTAINER_GROUP_ID=1000
+	- ADDTOPYPATH=/home/python-dev/src/
   volumes:
     - /home/git/GeoServer-Python-REST-API/:/GeoServer-Python-REST-API/
   links:
@@ -75,13 +77,19 @@ uid=1001(username) gid=1001(username) groups=1002(username)
 
 where __CONTAINER_USER_ID__ will be the __uid__ and __CONTAINER_GROUP_ID__ will be the __groups__. The container will create a dummy user with those ID called _python-dev_ that is the one to be used for running Python code inside the container.
 
-The __PIP_PACKAGES__ variable contains a list of semicolon-separated PIP package names that are installed on first run. Once started, the container will be in an infinite loop doing nothing. To use it, execute:
+The __PIP_PACKAGES__ variable contains a list of semicolon-separated PIP package names that are installed on first run. __ADDTOPYPATH__ adds folders inside the container (most probably the hard linked volume mounted with _-v_) to the __PYTHONPATH__.
+
+Once started, the container will be in an infinite loop doing nothing. To use it, execute:
 
 ```Shell
 docker exec -ti containername su python-dev -c /bin/bash
 ```
 
-This will enter into interactive mode where Python code can be executed.
+This will enter into interactive mode where Python code can be executed. If root access to the container is needed, for example to install a pip package:
+
+```Shell
+docker exec -ti containername /bin/bash
+```
 
 The interactive console can be quit with _exit_; however, the container will continue to run. Stop it with:
 
