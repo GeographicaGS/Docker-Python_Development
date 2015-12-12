@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+
+mkdir -p /home/python-dev
+groupadd -g $CONTAINER_GROUP_ID python-dev
+useradd -s /bin/bash -u $CONTAINER_USER_UID -g python-dev -d /home/python-dev/ python-dev
+echo "python-dev:python-dev" | chpasswd
+
+# Process PIP packages
+/usr/local/bin/install_pip_packages
+
+# This leaves the container in standby
+# exec gosu python-dev tail -f /dev/null
+exec tail -f /dev/null
