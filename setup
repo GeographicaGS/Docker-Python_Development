@@ -2,16 +2,19 @@
 set -e
 
 mkdir -p /home/python-dev
-groupadd -g $CONTAINER_GROUP_ID python-dev
-useradd -s /bin/bash -u $CONTAINER_USER_UID -g python-dev -d /home/python-dev/ python-dev
-echo "python-dev:python-dev" | chpasswd
 
-# Process PIP packages
-/usr/local/bin/install_pip_packages
+# Initialize if user python-dev does not exists
+if [ $(id -u python-dev > /dev/null 2>&1; echo $?) -eq 1 ]; then
+    groupadd -g $CONTAINER_GROUP_ID python-dev
+    useradd -s /bin/bash -u $CONTAINER_USER_UID -g python-dev -d /home/python-dev/ python-dev
+    echo "python-dev:python-dev" | chpasswd
 
-echo export TERM=xterm >> /etc/bash.bashrc
-echo export PYTHONPATH=$PYTHONPATH:$ADDTOPYPATH >> /etc/bash.bashrc
+    # Process PIP packages
+    /usr/local/bin/install_pip_packages
+
+    echo export TERM=xterm >> /etc/bash.bashrc
+    echo export PYTHONPATH=$PYTHONPATH:$ADDTOPYPATH >> /etc/bash.bashrc
+fi
 
 # This leaves the container in standby
-# exec gosu python-dev tail -f /dev/null
 exec tail -f /dev/null
