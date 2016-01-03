@@ -1,9 +1,9 @@
-FROM python:2.7.11
+FROM ubuntu:latest
 
 MAINTAINER Juan Pedro Perez "jp.alcantara@geographica.gs"
 
 RUN apt-get update
-RUN apt-get install less nano
+RUN apt-get install -y less nano libpython2.7 python-dev python-pip
 ENV PIP_PACKAGES ipython
 ENV CONTAINER_USER_UID 1000
 ENV CONTAINER_GROUP_ID 1000
