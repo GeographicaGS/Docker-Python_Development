@@ -6,9 +6,10 @@ if [ $(id -u python-dev > /dev/null 2>&1; echo $?) -eq 1 ]; then
     groupadd -g $CONTAINER_GROUP_ID python-dev
     useradd -s /bin/bash -u $CONTAINER_USER_UID -g python-dev -d /home/python-dev/ python-dev
     echo "python-dev:python-dev" | chpasswd
+    chown python-dev:python-dev /home/python-dev
 
     # Process PIP packages
-    /usr/local/bin/install_pip_packages
+    /usr/local/bin/install_packages
 
     echo export TERM=xterm >> /etc/bash.bashrc
     echo export PYTHONPATH=$PYTHONPATH:$ADDTOPYPATH >> /etc/bash.bashrc

@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+# coding=UTF-8
+
+from subprocess import call
+import os
+
+# Install apt packages
+aptpackages = os.environ["APT_PACKAGES"].split(";")
+
+for package in aptpackages:
+    call(["apt-get", "install", "-y", package])
+
+#Install pip packages
+pippackages = os.environ["PIP_PACKAGES"].split(";")
+
+for package in pippackages:
+    call(["pip","install",package])

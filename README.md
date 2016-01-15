@@ -39,7 +39,8 @@ docker pull geographica/python_development:2.7.11
 Always run the Compose or the container with __-d__. To run it:
 
 ```Shell
-docker run -d --name whatever -e "PIP_PACKAGES=ipython;psycopg2;pytest" \
+docker run -d --name whatever -e "APT_PACKAGES=libpq-dev" \
+-e "PIP_PACKAGES=ipython;psycopg2;pytest" \
 -e "CONTAINER_USER_UID=1001" -e "CONTAINER_GROUP_ID=1002" \
 -e "ADDTOPYPATH=/home/python-dev/src" \
 -v /home/testuser/:/home/python-dev/ geographica/python_development:2.7.11
@@ -51,6 +52,7 @@ Do not attach to this container with __attach__. An example of integration in a 
 python-dev:
   image: geographica/python_development:2.7.11
   environment:
+    - APT_PACKAGES=libpq-dev
     - PIP_PACKAGES=ipython;psycopg2
     - CONTAINER_USER_UID=1000
     - CONTAINER_GROUP_ID=1000
@@ -77,7 +79,15 @@ uid=1001(username) gid=1001(username) groups=1002(username)
 
 where __CONTAINER_USER_ID__ will be the __uid__ and __CONTAINER_GROUP_ID__ will be the __groups__. The container will create a dummy user with those ID called _python-dev_ that is the one to be used for running Python code inside the container.
 
-The __PIP_PACKAGES__ variable contains a list of semicolon-separated PIP package names that are installed on first run. __ADDTOPYPATH__ adds folders inside the container (most probably the hard linked volume mounted with _-v_) to the __PYTHONPATH__.
+The __APT_PACKAGES__ variable contains a list of semicolon-separated APT package names to be installed on the first run. __PIP_PACKAGES__ does the same with PIP oneso. __ADDTOPYPATH__ adds folders inside the container (most probably the hard linked volume mounted with _-v_) to the __PYTHONPATH__.
+
+To check if the first run setup process is over, launch:
+
+```Shell
+docker exec containername ps aux
+```
+
+If __setup__ is one of the running processes, it's not ready yet.
 
 Once started, the container will be in an infinite loop doing nothing. To use it, execute:
 
@@ -99,4 +109,4 @@ docker stop containername
 
 # Tags
 
-The only tag available is __2.7.11__, which refers to the Python version of the Python base image being use. Please refer to the Dockerhub official Python base images for [reference](https://hub.docker.com/_/python/).
+The only tag available is __2.7.11__, which refers to the Python version being used.
