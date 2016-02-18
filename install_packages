@@ -4,6 +4,9 @@
 from subprocess import call
 import os
 
+# Update
+call(["apt-get", "update"])
+
 # Install apt packages
 aptpackages = os.environ["APT_PACKAGES"].split(";")
 
